@@ -21,7 +21,9 @@ def convert_video():
         # os.makedirs(download_path, exist_ok=True)
         
         # Chemin vers le dossier Téléchargements
-        DOWNLOAD_FOLDER = os.path.join(os.path.expanduser("~"), "Downloads")
+        # DOWNLOAD_FOLDER = os.path.join(os.path.expanduser("~"), "Downloads")
+        DOWNLOAD_FOLDER = "/tmp"
+
         os.makedirs(DOWNLOAD_FOLDER, exist_ok=True)  # Crée le dossier s'il n'existe pas
         
         # Télécharger et convertir en MP3

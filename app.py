@@ -76,14 +76,19 @@ os.makedirs(DOWNLOAD_FOLDER, exist_ok=True)
 logging.basicConfig(level=logging.DEBUG)
 
 
-@app.route('/convert', methods=['POST'])
+@app.route('/convert', methods=['POST', 'OPTIONS'])
 def convert_video():
-    logging.debug(f"Requête reçue : {request.json}")
-    """
-    Convertit une vidéo YouTube en MP3 et retourne le fichier en téléchargement.
-    """
+    if request.method == 'OPTIONS':
+        # Réponse pour les requêtes préliminaires CORS
+        response = app.response_class()
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+        return response, 200
+
+    # Logique existante pour la conversion
     try:
-        # Récupérer l'URL envoyée dans la requête
+        logging.debug(f"Requête reçue : {request.json}")
         data = request.get_json()
         if not data or 'url' not in data:
             return jsonify({"error": "URL manquante dans la requête."}), 400
@@ -101,22 +106,19 @@ def convert_video():
             'outtmpl': f'{DOWNLOAD_FOLDER}/%(title)s.%(ext)s',  # Modèle de fichier de sortie
         }
 
-        # Télécharger et convertir la vidéo
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            info = ydl.extract_info(youtube_url, download=True)  # Télécharge et extrait les infos
-            file_title = info.get('title', 'audio')  # Récupère le titre de la vidéo
-            file_path = f"{DOWNLOAD_FOLDER}/{file_title}.mp3"  # Chemin final du fichier MP3
+            info = ydl.extract_info(youtube_url, download=True)
+            file_title = info.get('title', 'audio')
+            file_path = f"{DOWNLOAD_FOLDER}/{file_title}.mp3"
 
-        # Vérifie que le fichier a bien été créé
         if not os.path.exists(file_path):
             return jsonify({"error": "Le fichier MP3 n'a pas pu être généré."}), 500
 
-        # Retourner le fichier MP3 en pièce jointe
         return send_file(file_path, as_attachment=True)
 
     except Exception as e:
-        # En cas d'erreur, renvoyer un message détaillé pour le debug
         return jsonify({"error": f"Une erreur est survenue : {str(e)}"}), 500
+
 
 if __name__ == "__main__":
     # Récupérer le port défini par Heroku ou utiliser 5000 par défaut

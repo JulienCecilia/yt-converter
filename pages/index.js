@@ -17,7 +17,7 @@ export default function Home() {
       //   body: JSON.stringify({ url }),
       // });
 
-      const response = await fetch("https://convertisseur-mp3-c3bbe80142b8.herokuapp.com/", {
+      const response = await fetch("https://convertisseur-mp3-c3bbe80142b8.herokuapp.com/convert", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

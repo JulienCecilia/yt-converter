@@ -9,13 +9,22 @@ export default function Home() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/convert", {
+      // const response = await fetch("http://127.0.0.1:5000/convert", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({ url }),
+      // });
+
+      const response = await fetch("https://convertisseur-mp3-c3bbe80142b8.herokuapp.com/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ url }),
       });
+
       //console.log(await response.json()); // Affiche la réponse complète du backend
 
 

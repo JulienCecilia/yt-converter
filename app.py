@@ -62,6 +62,7 @@ from flask import Flask, request, jsonify, send_file
 import os
 import yt_dlp
 from flask_cors import CORS
+import logging
 
 app = Flask(__name__)
 CORS(app)  # Active CORS pour permettre les requêtes cross-origin
@@ -72,8 +73,12 @@ DOWNLOAD_FOLDER = "/tmp"
 # Crée le dossier temporaire s'il n'existe pas déjà
 os.makedirs(DOWNLOAD_FOLDER, exist_ok=True)
 
+logging.basicConfig(level=logging.DEBUG)
+
+
 @app.route('/convert', methods=['POST'])
 def convert_video():
+    logging.debug(f"Requête reçue : {request.json}")
     """
     Convertit une vidéo YouTube en MP3 et retourne le fichier en téléchargement.
     """

@@ -79,7 +79,7 @@ export default function Home() {
 
     try {
       // Appel à l'API Flask hébergée sur Heroku
-      const response = await fetch("https://convertisseur-mp3-c3bbe80142b8.herokuapp.com/", {
+      const response = await fetch("https://convertisseur-mp3-c3bbe80142b8.herokuapp.com/convert", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

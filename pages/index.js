@@ -80,6 +80,7 @@ export default function Home() {
     setError(""); // Réinitialise les erreurs avant de commencer
 
     try {
+      console .log('debut conversion') ;
       // Appel à l'API Flask hébergée sur Heroku
       const response = await fetch("https://convertisseur-mp3-c3bbe80142b8.herokuapp.com/convert", {
         method: "POST",
@@ -88,6 +89,7 @@ export default function Home() {
         },
         body: JSON.stringify({ url }), // Envoi de l'URL YouTube au backend
       });
+      console .log('milieu conversion', response) ;
 
       // Vérification du statut de la réponse
       if (!response.ok) {
